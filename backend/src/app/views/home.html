@@ -9,15 +9,49 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js" integrity="sha512-oFOCo2/3DtjrJG4N27BjSLQWoiBv171sK6a+JiWjp/7agxC2nCUP358AqzxkBUb5jX8g6CYLPdSKQTbC0weCwA==" crossorigin="anonymous"></script>
 </head>
 <body>
-    <form id="chat">
+    <form id="chat" name="chat">
         <input type="text" name="username" placeholder="Digite seu usuário">
         <div class="messages"></div>
-        <input type="text" name="username" placeholder="Digite sua messangem">
+        <input type="text" name="message" placeholder="Digite sua messangem">
         <button type="submit">Enviar</button>
     </form>
 
     <script>
-        const socket = io('http://localhost:3333');
+        const socket = io('http://localhost:3030');
+
+        function renderMessage (message) {
+            const chatBox = document.querySelector('.messages');
+            chatBox.innerHTML += '<div class="message"><strong>'+message.user+'</strong>: '+message.message+'</div>';
+        }
+        socket.on('previousMessages', (messages) => {
+            for (message of messages) {
+                renderMessage(message);
+            }
+        });
+
+        socket.on('receivedMessage', (message) => {
+            renderMessage(message);
+        });
+
+        const form = document.forms.chat;
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            
+            const user = form.username.value;
+            const message = form.message.value;
+
+            if (user && message) {
+                const messageObj = {
+                    user: user,
+                    message: message
+                };
+
+                renderMessage(messageObj);
+
+                socket.emit('sendMessage', messageObj);
+            }
+        });
+
     </script>
 </body>
 </html>
