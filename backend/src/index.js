@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const socketio = require('socket.io')
 const handleSocket = require('./socket');
 const path = require('path');
@@ -7,10 +8,18 @@ require('express-async-errors');
 require("dotenv").config();
 
 //const routes = require('./routes');
-
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200
+};
 const app = express();
+app.use(cors(corsOptions))
 const server = require('http').createServer(app);
-const io = socketio(server);
+const io = socketio(server, {
+    cors: {
+      origin: '*',
+    }
+});
 
 app.use(express.json());
 
@@ -20,7 +29,7 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
 app.use('/',(request, response) => {
-    return response.render('home.html');
+    return response.json({ hello: "Olá"});
 });
 //app.use(routes);
 
