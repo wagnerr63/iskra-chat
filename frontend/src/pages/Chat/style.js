@@ -114,6 +114,25 @@ export const Messages = styled.div`
     display: flex;
     flex-direction: column;
     border-radius: 8px;
+    overflow: auto;
+
+     &::-webkit-scrollbar {
+        width: 10px;
+        border: none;
+        border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #edf2f4;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #8d99ae;    /* color of the scroll thumb */
+        border-radius: 20px;       /* roundness of the scroll thumb */
+        border: none;  /* creates padding around scroll thumb */
+    }
+
+
 `;
 
 export const InputArea = styled.div`

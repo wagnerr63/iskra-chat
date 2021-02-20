@@ -1,14 +1,18 @@
-const handleSocket = (socket) => {
-    console.log(`Socket connected: ${socket.id}`);
+const Message = require('./app/models/Message');
+
+class SocketController {
+    async handle (socket){
+        console.log(`Socket connected: ${socket.id}`);
+        
+        const messages = await Message.findAll();
+        socket.emit('previousMessages', messages);
     
-    let messages = [ { user: "IskraChat", message: "Bem-vindo ao IskraChat! 🔥"} ];
+        socket.on('sendMessage', async (data) => {
+            await Message.create({ user_name: data.user_name, content: data.content});
+            socket.broadcast.emit('receivedMessage', { user_name: data.user, content: data.message});
+        });
+    }
+    
+}
 
-    socket.emit('previousMessages', messages);
-
-    socket.on('sendMessage', (data) => {
-        messages.push(data);
-        socket.broadcast.emit('receivedMessage', data);
-    });
-};
-
-module.exports = handleSocket;
+module.exports = new SocketController();

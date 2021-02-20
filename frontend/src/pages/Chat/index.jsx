@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import socketIOClient from "socket.io-client";
 
@@ -35,11 +35,6 @@ export default function Chat() {
     }
 
     if (userName && userName!=="") {
-
-        socket.on('previousMessages', (messages) => { 
-            console.log('antigas', messages);
-            setMessage(messages);
-        });
     
         socket.on("receivedMessage", (newMessage) => {
             const newObj = [...messages];
@@ -49,8 +44,13 @@ export default function Chat() {
         });
     }
 
+    socket.on('previousMessages', (messages) => { 
+        console.log('antigas', messages);
+        setMessage(messages);
+    });
+
     const messagesBox = messages.map( (msg, index) => (
-        <Message key={index} user={msg.user} message={msg.message} />
+        <Message key={index} user={msg.user_name} message={msg.content} />
     ) );
 
     function handleSubmit (event) {
@@ -62,8 +62,8 @@ export default function Chat() {
 
         if(user && message) {
             const messageObj = {
-                user: user,
-                message: message
+                user_name: user,
+                content: message
             };
 
             const newMessages = [...messages];

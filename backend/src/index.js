@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const socketio = require('socket.io')
-const handleSocket = require('./socket');
+const SocketController = require('./socket');
 const path = require('path');
 
 require('express-async-errors');
@@ -33,7 +33,7 @@ app.use('/',(request, response) => {
 });
 //app.use(routes);
 
-io.on('connection', handleSocket);
+io.on('connection', SocketController.handle);
 
 app.use((error, request, response, next) => {
     console.log('#### Error Handler');
