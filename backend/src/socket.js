@@ -3,7 +3,7 @@ const Message = require('./app/models/Message');
 class SocketController {
     async handle (socket){
         console.log(`Socket connected: ${socket.id}`);
-        
+
         const messages = await Message.findAll();
         socket.emit('previousMessages', messages);
     
