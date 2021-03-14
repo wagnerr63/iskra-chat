@@ -10,7 +10,6 @@ export default function Login () {
 
     const [userName, setUserName] = useState(localStorage.getItem('userName'));
     let history = useHistory();
-
     const handleLogin = (event) => {
         event.preventDefault();
         const form = document.forms.login;
@@ -19,7 +18,7 @@ export default function Login () {
         if (username) {
             localStorage.setItem('userName', username );
             setUserName(username);
-            history.push('/chat');
+            window.location.href = "http://localhost:3000/chat";
         }
 
     };

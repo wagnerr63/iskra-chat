@@ -9,7 +9,7 @@ class SocketController {
     
         socket.on('sendMessage', async (data) => {
             await Message.create({ user_name: data.user_name, content: data.content});
-            socket.broadcast.emit('receivedMessage', { user_name: data.user, content: data.message});
+            socket.broadcast.emit('receivedMessage', data);
         });
     }
     

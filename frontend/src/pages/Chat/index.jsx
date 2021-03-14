@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { useHistory } from 'react-router-dom';
-
+ 
 import socketIOClient from "socket.io-client";
 
 import SendIcon from './send.svg';
@@ -11,15 +11,14 @@ import { ChatConteiner, Content, ContentHeader, Messages, InputArea } from './st
 
 import Message from '../../components/Message';
 
+const ENDPOINT = "http://localhost:3030";
+const socket = socketIOClient(ENDPOINT);
 
 export default function Chat() {
 
     const [messages, setMessage] = useState([]);
     const [userName, setUserName] = useState(localStorage.getItem('userName'));
-
-    const ENDPOINT = "http://localhost:3030";
-    const socket = socketIOClient(ENDPOINT);
-
+    let history = useHistory();
     useEffect( () => {
 
         socket.on('previousMessages', (messages) => { 
@@ -29,7 +28,6 @@ export default function Chat() {
     
     },[]);
     
-    let history = useHistory();
     if (!userName) {
         history.push('/');
     }
@@ -70,7 +68,6 @@ export default function Chat() {
             form.message.value="";
             setMessage(newMessages);
             socket.emit('sendMessage', messageObj);
-            console.log('novas', messages);
         }
 
     }
