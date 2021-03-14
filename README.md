@@ -1,6 +1,8 @@
 # ISKRA CHAT 🔥
 Webchat em tempo real com NodeJS, Socket.io e React
 
+![](iskra-chat.gif)
+
 ## Para trabalhar com este projeto você precisa ter:
     - Docker
     - Node
